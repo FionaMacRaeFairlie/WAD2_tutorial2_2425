@@ -22,7 +22,8 @@ app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 
 // Routes
-app.get("/serverForm2", (req, res) => {
+app.get("/serverForm", (req, res) => {
+  // Renders the form using a Mustache template
   res.render("form", {
     title: "Input from form",
     name: "",
@@ -30,18 +31,30 @@ app.get("/serverForm2", (req, res) => {
   });
 });
 
-app.post("/processForm", (req, res) => {
-  const userName = req.body.firstName;
+app.post("/processForm1a", (req, res) => {
+  // Send an HTML response directly
+  res.send(
+    `<html>
+      <body>
+        <h1>Form submitted</h1>
+         <p> Name: ${req.body.firstName} </p>
+         <p> Surname: ${req.body.surname} </p> 
+       </body>
+    </html>`
+  );
+});
+
+app.post("/processForm1b", (req, res) => {
+  // Uses a Mustache template to render the response
   res.render("formResults", {
     title: "Input from form",
-    name: userName,
+    name: req.body.firstName,
     surname: req.body.surname,
   });
 });
 
-app.post("/processForm2", (req, res) => {
-  const userName = req.body.firstName;
-  console.log(userName);
+app.post("/processForm1c", (req, res) => {
+  // Uses the same Mustache template to render the form and the response
   res.render("form", {
     title: "Input from form",
     name: req.body.firstName,
